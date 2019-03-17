@@ -1,12 +1,4 @@
-'''
-服务器cpu监控程序
 
-思路：后端后台线程一旦产生数据，即刻推送至前端。
-好处：不需要前端ajax定时查询，节省服务器资源。
-
-作者：hhh5460
-时间：2017.8.19
-'''
 import psutil
 import time
 
@@ -30,18 +22,18 @@ thread_lock = Lock()
 
 
 
-# 后台线程 产生数据，即刻推送至前端
+
 def background_thread():
     """Example of how to send server generated events to clients."""
     count = 0
     while True:
         socketio.sleep(1)
         count += 1
-        t = time.strftime('%M:%S', time.localtime()) # 获取系统时间（只取分:秒）
-        cpus = psutil.cpu_percent(interval=None, percpu=True) # 获取系统cpu使用率 non-blocking
+        t = time.strftime('%M:%S', time.localtime())
+        cpus = psutil.cpu_percent(interval=None, percpu=True) #
         socketio.emit('server_response',
                       {'data': [t, *cpus], 'count': count},
-                      namespace='/test') # 注意：这里不需要客户端连接的上下文，默认 broadcast = True ！！！！！！！
+                      namespace='/test')
 
 
 @app.route('/')
@@ -50,7 +42,7 @@ def index():
 
 
 
-# 与前端建立 socket 连接后，启动后台线程
+
 @socketio.on('connect', namespace='/test')
 def test_connect():
     global thread
