@@ -32,7 +32,7 @@ def background_thread():
         t = time.strftime('%M:%S', time.localtime())
         cpus = [1,2,3,4] #
         socketio.emit('server_response',
-                      {'data': [t, *cpus], 'count': count},
+                      {'data': [t, cpus[0],cpus[1],cpus[2],cpus[3]], 'count': count},
                       namespace='/test')
 
 
