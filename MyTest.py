@@ -30,7 +30,7 @@ def background_thread():
         socketio.sleep(1)
         count += 1
         t = time.strftime('%M:%S', time.localtime())
-        cpus = psutil.cpu_percent(interval=None, percpu=True) #
+        cpus = [1,2,3,4] #
         socketio.emit('server_response',
                       {'data': [t, *cpus], 'count': count},
                       namespace='/test')
