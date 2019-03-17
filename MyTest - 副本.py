@@ -1,4 +1,5 @@
-import psutil
+
+#import psutil
 import time
 
 from threading import Lock
@@ -21,38 +22,42 @@ thread_lock = Lock()
 
 
 
-# 后台线程 产生数据，即刻推送至前端
+
 def background_thread():
     """Example of how to send server generated events to clients."""
     count = 0
     while True:
-        socketio.sleep(0.1)
+        socketio.sleep(1)
         count += 1
-        t = time.strftime('%M:%S', time.localtime()) # 获取系统时间（只取分:秒）
-        cpus = psutil.cpu_percent(interval=None, percpu=True) # 获取系统cpu使用率 non-blocking
+        t = time.strftime('%M:%S', time.localtime())
+        cpus = [1,2,3,4] #
+        print('sending')
         socketio.emit('server_response',
-                      {'data': [t, *cpus], 'count': count},
-                      namespace='/test') # 注意：这里不需要客户端连接的上下文，默认 broadcast = True ！！！！！！！
+                      {'data': [t, cpus[0],cpus[1],cpus[2],cpus[3]], 'count': count})
 
 
 @app.route('/')
 def index():
     return render_template('index.html', async_mode=socketio.async_mode)
 
+@app.route('/t1')
+def index1():
+    return "hello world"
 
 
-# 与前端建立 socket 连接后，启动后台线程
-@socketio.on('connect', namespace='/test')
+@socketio.on('connect', namespace='/tt')
 def test_connect():
     global thread
+    print('conn')
     with thread_lock:
         if thread is None:
             thread = socketio.start_background_task(target=background_thread)
 
-@socketio.on('message',namespace='/test')
-def RecvMesage(msg):
-    print(msg)
+@socketio.on('sendMsg')
+def myhandle(jsondata):
+    print('recv message')
+    print(jsondata)
 
 
 if __name__ == '__main__':
-    socketio.run(app, debug=True)
+    socketio.run(app, host='0.0.0.0', port=5000,debug=True)
