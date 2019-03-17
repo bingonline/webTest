@@ -1,4 +1,4 @@
-import psutil
+#import psutil
 import time
 
 from threading import Lock
@@ -21,7 +21,7 @@ thread_lock = Lock()
 
 
 
-# 后台线程 产生数据，即刻推送至前端
+
 def background_thread():
     """Example of how to send server generated events to clients."""
     count = 0
@@ -29,9 +29,10 @@ def background_thread():
         socketio.sleep(0.1)
         count += 1
         t = time.strftime('%M:%S', time.localtime()) # 获取系统时间（只取分:秒）
-        cpus = psutil.cpu_percent(interval=None, percpu=True) # 获取系统cpu使用率 non-blocking
+        #cpus = psutil.cpu_percent(interval=None, percpu=True) # 获取系统cpu使用率 non-blocking
+        cpus=[1,2,3,4]
         socketio.emit('server_response',
-                      {'data': [t, *cpus], 'count': count},
+                      {'data': [t, cpus[0],cpus[1],cpus[2],cpus[3]], 'count': count},
                       namespace='/test') # 注意：这里不需要客户端连接的上下文，默认 broadcast = True ！！！！！！！
 
 
@@ -41,7 +42,7 @@ def index():
 
 
 
-# 与前端建立 socket 连接后，启动后台线程
+
 @socketio.on('connect', namespace='/test')
 def test_connect():
     global thread
