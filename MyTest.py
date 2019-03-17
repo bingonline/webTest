@@ -28,14 +28,11 @@ def background_thread():
     while True:
         socketio.sleep(0.1)
         count += 1
-        t = time.strftime('%M:%S', time.localtime()) # 获取系统时间（只取分:秒）
-        #cpus = psutil.cpu_percent(interval=None, percpu=True) # 获取系统cpu使用率 non-blocking
+        t = time.strftime('%M:%S', time.localtime()) 
         cpus=[1,2,3,4]
         socketio.emit('server_response',
                       {'data': [t, cpus[0],cpus[1],cpus[2],cpus[3]], 'count': count},
-                      namespace='/test') # 注意：这里不需要客户端连接的上下文，默认 broadcast = True ！！！！！！！
-
-
+                      namespace='/test')
 @app.route('/')
 def index():
     return render_template('index.html', async_mode=socketio.async_mode)
