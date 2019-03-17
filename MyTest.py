@@ -28,7 +28,7 @@ def background_thread():
     while True:
         socketio.sleep(0.1)
         count += 1
-        t = time.strftime('%M:%S', time.localtime()) 
+        t = time.strftime('%M:%S', time.localtime())
         cpus=[1,2,3,4]
         socketio.emit('server_response',
                       {'data': [t, cpus[0],cpus[1],cpus[2],cpus[3]], 'count': count},
@@ -53,4 +53,4 @@ def RecvMesage(msg):
 
 
 if __name__ == '__main__':
-    socketio.run(app, debug=True)
+    socketio.run(app,host='0.0.0.0', port=5000, debug=True)
