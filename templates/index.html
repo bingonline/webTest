@@ -3,111 +3,57 @@
 <head>
     <meta charset="utf-8">
     <title>ECharts3 Ajax</title>
-    <link  href="{{url_for('static',filename = './css/bootstrap.min.css')}}" rel="stylesheet"/>
-
-    <script type="text/javascript" src="{{url_for('static', filename='./js/jquery-3.3.1.min.js')}}"></script>
-    <script type="text/javascript" src="{{url_for('static', filename='./js/popper.min.js')}}"></script>
-     <script type="text/javascript" src="{{url_for('static', filename='./js/socket.io.min.js')}}"></script>
-    <script type="text/javascript" src="{{url_for('static', filename='./js/bootstrap.min.js')}}"></script>
+    <link  href="{{url_for('static',filename = './themes/bootstrap/easyui.css')}}" rel="stylesheet"/>
+    <link  href="{{url_for('static',filename = './themes/icon.css')}}" rel="stylesheet"/>
+    <script type="text/javascript" src="{{url_for('static', filename='./jquery.min.js')}}"></script>
+    <script type="text/javascript" src="{{url_for('static', filename='./jquery.easyui.min.js')}}"></script>
+     <script type="text/javascript" src="{{url_for('static', filename='./socket.io.min.js')}}"></script>
+     <script type="text/javascript" src="{{url_for('static', filename='./locale/easyui-lang-zh_CN.js')}}"></script>
     <!-- ECharts 3 引入 -->
-    <script src="{{url_for('static', filename='./js/echarts.min.js')}}"></script></head>
+    <script src="{{url_for('static', filename='./echarts.min.js')}}"></script></head>
 
 <body>
-    <!--为ECharts准备一个具备大小（宽高）的Dom-->
-    <div class="container">
-        <h1 class="display-3 text-center">数据监控系统</h1>
-      </div>
-    <div class="container-fluid">
-        <div class="row">
-          <nav class="col-md-2 d-none d-md-block bg-light sidebar">
-            <div class="sidebar-sticky">
-              <ul class="nav flex-column">
-                <li class="nav-item">
-                  <a class="nav-link active" href="#">
-                    <span data-feather="home"></span>
-                    Dashboard <span class="sr-only">(current)</span>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">
-                    <span data-feather="file"></span>
-                    Orders
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">
-                    <span data-feather="shopping-cart"></span>
-                    Products
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">
-                    <span data-feather="users"></span>
-                    Customers
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">
-                    <span data-feather="bar-chart-2"></span>
-                    Reports
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">
-                    <span data-feather="layers"></span>
-                    Integrations
-                  </a>
-                </li>
-              </ul>
-  
-              <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-                <span>Saved reports</span>
-                <a class="d-flex align-items-center text-muted" href="#">
-                  <span data-feather="plus-circle"></span>
-                </a>
-              </h6>
-              <ul class="nav flex-column mb-2">
-                <li class="nav-item">
-                  <a class="nav-link" href="#">
-                    <span data-feather="file-text"></span>
-                    Current month
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">
-                    <span data-feather="file-text"></span>
-                    Last quarter
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">
-                    <span data-feather="file-text"></span>
-                    Social engagement
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">
-                    <span data-feather="file-text"></span>
-                    Year-end sale
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </nav>
-  
-          <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+   
     
-            <div id="main" style="height:500px;border:1px solid #ccc;padding:10px;"></div>
+    <div id="main" style="height:500px;border:1px solid #ccc;padding:10px;"></div>
   
-           
-            
-          </main>
-        </div>
-      </div>
+	  
+	  <h2>Basic CRUD Application</h2>
+	<p>Click the buttons on datagrid toolbar to do crud actions.</p>
+	
+	<table id="dg" title="My Users" class="easyui-datagrid" style="width:100%;height:550px"
+			url="get_users.php"
+			toolbar="#toolbar" pagination="true"
+			rownumbers="true" fitColumns="true" singleSelect="true">
+	</table>
+	<div id="toolbar">
+		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newUser()">New User</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editUser()">Edit User</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroyUser()">Remove User</a>
+	</div>
+	
+  
+	  
     <script type="text/javascript">
     // 作者：hhh5460
     // 时间：2017.8.19
     //--- 折柱 ---
+
+    $('#dg').datagrid({
+    url:'/sendDate',
+    loadMsg:'',
+    columns:[[
+		{field:'name1',title:'Name1',width:'20%',align:'right',sortable:true},
+		{field:'value1',title:'Value1',width:'10%'},
+		{field:'name2',title:'Name2',width:'20%',align:'right',sortable:true},
+		{field:'value2',title:'Value2',width:'10%'},
+    {field:'name3',title:'Name3',width:'20%',align:'right',sortable:true},
+		{field:'value3',title:'Value3',width:'10%'},
+    ]]
+});
+
+
+
     var myChart = echarts.init(document.getElementById('main'));
     
     myChart.setOption({
@@ -203,6 +149,7 @@
         
         socket.on('server_response', function(res) {
             update_mychart(res);
+            $('#dg').datagrid('reload');
         });
         socket.emit('message','hello world');
     });

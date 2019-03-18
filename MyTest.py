@@ -5,7 +5,7 @@ from threading import Lock
 
 from flask import Flask, render_template, session, request
 from flask_socketio import SocketIO, emit
-
+from flask import json,jsonify
 # Set this variable to "threading", "eventlet" or "gevent" to test the
 # different async modes, or leave it set to None for the application to choose
 # the best option based on installed packages.
@@ -20,13 +20,13 @@ thread = None
 thread_lock = Lock()
 
 
-
+data=1
 
 def background_thread():
     """Example of how to send server generated events to clients."""
     count = 0
     while True:
-        socketio.sleep(0.1)
+        socketio.sleep(1)
         count += 1
         t = time.strftime('%M:%S', time.localtime())
         cpus=[1,2,3,4]
@@ -50,6 +50,26 @@ def test_connect():
 @socketio.on('message',namespace='/test')
 def RecvMesage(msg):
     print(msg)
+
+def GenData():
+    global data
+    data_list=[]
+    for i in range(120):
+        dic = {'name1': data, 'value1': '', 'name2': '', 'value2': '', 'name3': '', 'value3': ''}
+        data_list.append(dic)
+    return data_list
+
+
+
+@app.route('/sendDate',methods=['GET','POST'])
+def form_data():
+    global data
+    data=data+1
+    ret={'total' : 120,'rows':GenData()}
+    print(ret)
+    print('get Data')
+    return jsonify(ret)
+
 
 
 if __name__ == '__main__':
