@@ -12,29 +12,82 @@
     <!-- ECharts 3 引入 -->
     <script src="{{url_for('static', filename='./echarts.min.js')}}"></script></head>
 
-<body>
+<body class="easyui-layout">
    
+    <div data-options="region:'north',title:'North Title',split:true" style="height:100px;"></div>
+    <div data-options="region:'south',title:'South Title',split:true" style="height:100px;"></div>
+    <div data-options="region:'east',title:'East',split:true" style="width:20%;"></div>
+    <div data-options="region:'west',title:'West',split:true" style="width:20%;">
     
-    <div id="main" style="height:500px;border:1px solid #ccc;padding:10px;"></div>
-  
-	  
-	  <h2>Basic CRUD Application</h2>
-	<p>Click the buttons on datagrid toolbar to do crud actions.</p>
-	
-	<table id="dg" title="My Users" class="easyui-datagrid" style="width:100%;height:550px"
-			url="get_users.php"
-			toolbar="#toolbar" pagination="true"
-			rownumbers="true" fitColumns="true" singleSelect="true">
-	</table>
-	<div id="toolbar">
-		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newUser()">New User</a>
-		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editUser()">Edit User</a>
-		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroyUser()">Remove User</a>
-	</div>
-	
-  
-	  
-    <script type="text/javascript">
+        <div id="smm" class="easyui-sidemenu" style="width:100%" data-options="data:data" ></div>
+        
+        <script type="text/javascript">
+   
+
+            var data = [{
+                text: 'Forms',
+                iconCls: 'fa fa-wpforms',
+                state: 'open',
+                children: [{
+                    text: 'Form Element'
+                },{
+                    text: 'Wizard'
+                },{
+                    text: 'File Upload'
+                }]
+            },{
+                text: 'Mail',
+                iconCls: 'fa fa-at',
+                selected: true,
+                children: [{
+                    text: 'Inbox'
+                },{
+                    text: 'Sent'
+                },{
+                    text: 'Trash',
+                    children: [{
+                        text: 'Item1'
+                    },{
+                        text: 'Item2'
+                    }]
+                }]
+            },{
+                text: 'Layout',
+                iconCls: 'fa fa-table',
+                children: [{
+                    text: 'Panel'
+                },{
+                    text: 'Accordion'
+                },{
+                    text: 'Tabs'
+                }]
+            }];
+     
+         
+        </script>
+    
+    </div>
+    
+    <div data-options="region:'center',title:'center title'" style="padding:5px;background:#eee;">
+    
+    <div id="mainTab" class="easyui-tabs" style="width:100%;height:100%;">
+    
+        <div title="图" id="main" style="height:500px;width:800px;border:1px solid #ccc;padding:10px;"></div>
+
+        <div title="gird" style="height:500px;border:1px solid #ccc;padding:10px;">
+            <table id="dg" title="My Users" class="easyui-datagrid" style="width:100%;height:100%"
+                    url="get_users.php"
+                    toolbar="#toolbar" pagination="true"
+                    rownumbers="true" fitColumns="true" singleSelect="true">
+            </table>
+                <div id="toolbar">
+                    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newUser()">New User</a>
+                    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editUser()">Edit User</a>
+                    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroyUser()">Remove User</a>
+                </div>
+        </div>
+	</div>  
+<script type="text/javascript">
     // 作者：hhh5460
     // 时间：2017.8.19
     //--- 折柱 ---
